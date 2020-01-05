@@ -1,30 +1,126 @@
 ---
-title: "Untitled"
+title: "All weather & Global dynamic asset allocation 전략"
 output: github_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(message = F, warning = F)
+
 ```
 
-## GitHub Documents
+레이달리오의 all weather 포트폴리오 전략과 Global dynamic asset allocation 전략에 대한 벡테스트 결과를 비교 벡테스팅 방법 및 코드는 https://github.com/hyunyulhenry/GDAA 을 참조
 
-This is an R Markdown format used for publishing markdown documents to GitHub. When you click the **Knit** button all R code chunks are run and a markdown file (.md) suitable for publishing to GitHub is generated.
 
-## Including Code
+### 레이달리오의 all weather 포트폴리오
 
-You can include R code in the document as follows:
+인플레이션, 저성장 등의 가능한 경제상황에 대체로 대응할 수 있게 고안된 포트폴리오. 
+미 전체 주식 종목에 대한 ETF 30%, 미 장기채 ETF 40%, 미 중기채 ETF 15%, 금 ETF 7.5%, 원자재 ETF 7.5%로 구성되며 리밸런싱은 매년 수행
 
-```{r cars}
-summary(cars)
+   
+```{r settings, include = F}
+pkg = c('httr', 'rvest', 'readr', 'stringr', 'dplyr', 'ggplot2', 'quantmod', 'dygraphs',
+        'highcharter', 'plotly', 'PerformanceAnalytics', 'magrittr', 'corrplot', 'tidyr',
+        'nloptr', 'quadprog', 'RiskPortfolios', 'timeSeries', 'lubridate','knitr', 'showtext')
+sapply(pkg, require, character.only = T)
+
+options(warn = -1)
+
+font_add_google('Nanum Gothic', 'nanumgothic')
+showtext_auto()
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
+#### ETF 가격정보 다운로드 및 데이터 정리 
+```{r download}
+ticker = c('VTI', # 미국 상장 주식 전체(시가 가중평균)
+           'TLT', # 미국 장기 국채
+           'IEF', # 미국 중기채
+           'GLD', # 금
+           'DBC' # 원자
+           
+)
+getSymbols(ticker, src = 'yahoo')
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+# 수정 주가만 뽑아서 묶기
+prices = do.call(cbind, lapply(ticker, function(x) Ad(get(x))))
+
+# 일별 수익률 계산
+rets = Return.calculate(prices) %>% na.omit()
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+#### Return.portfolio 함수를 통한 백테스트 
+```{r backtesting}
+portfolio = Return.portfolio(R = rets, weights = c(0.3, 0.4, 0.15, 0.075, 0.075),
+                             rebalance_on = 'years',
+                             verbose = T)
+
+# 회전율 계산
+Port_turnover = xts(rowSums(abs(portfolio$BOP.Weight - stats::lag(portfolio$EOP.Weight)),
+                            na.rm = T), order.by = index(portfolio$BOP.Weight))
+
+# 매 거래시 수수료가 0.3%라 가정
+fee = 0.003
+
+# 수익률을 반영한 순수익 계산
+Port_net = portfolio$returns - (Port_turnover * fee)
+
+names(Port_net) = 'Returns_allweather'
+```
+
+#### 백테스트 결과 
+```{r result, echo = F}
+# 누적 수익률을 차트로 표현 
+chart.CumReturns(Port_net, main = '누적 수익률', family = 'nanumgothic')
+```
+
+
+```{r result_1, echo = F}
+# 누적 수익률 계산
+누적수익률 = as.numeric(t(Return.cumulative(Port_net)))
+
+# 연율화 수익률(산술평균) 계산
+연평균수익률 = as.numeric(t(Return.annualized(Port_net, geometric = F)))
+
+# 최대 낙푹(Max Drawdown) 계산
+최대낙폭 = maxDrawdown(Port_net) 
+
+# 연율화 변동성 계산
+연평균표준편차 = as.numeric(t(StdDev.annualized(Port_net)))
+
+# 테이블 생성 
+table = data.frame(cbind(연평균수익률, 누적수익률, 최대낙폭, 연평균표준편차)) 
+rownames(table) = c('All Weather')
+```
+
+```{r chart, echo = F}
+# 연도별 수익률 그래프로 나타내기
+R.yr = apply.yearly(Port_net, Return.cumulative) %>% 
+  fortify.zoo() %>% mutate(Index = year(Index)) %>% 
+  gather(key, value, -Index) %>% 
+  mutate(key = factor(key, levels = unique(key)))
+
+ggplot(R.yr, aes(x = Index, y = value)) +
+  geom_bar(position = 'dodge', stat = 'identity') +
+  ggtitle('연도별 수익률') +
+  xlab(NULL) + ylab(NULL) +
+  theme_bw() +
+  scale_y_continuous(expand = c(0.03, 0.03)) +
+  scale_x_continuous(breaks = R.yr$Index, expand = c(0.01, 0.01)) +
+  theme(plot.title = element_text(hjust = 0.5, size = 12),
+        legend.position = 'bottom',
+        legend.title = element_blank(),
+        legend.text = element_text(size = 7),
+        axis.text.x = element_text(angle = 45, hjust = 1, size = 8),
+        panel.grid.minor.x = element_blank() ) +
+  guides(fill = guide_legend(byrow = T)) +
+  geom_text(aes(label = paste(round(value*100, 2), '%'), 
+                vjust = ifelse(value >= 0, -0.5, 1.5)),
+            position = position_dodge(width = 1),
+            size = 3)
+```
+
+
+#### 결과 요약
+```{r table, echo = F}
+kable(table[1, ], caption = '결과 요약')
+```
