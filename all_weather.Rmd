@@ -20,14 +20,13 @@ knitr::opts_chunk$set(message = F, warning = F)
 ```{r settings, include = F}
 pkg = c('httr', 'rvest', 'readr', 'stringr', 'dplyr', 'ggplot2', 'quantmod', 'dygraphs',
         'highcharter', 'plotly', 'PerformanceAnalytics', 'magrittr', 'corrplot', 'tidyr',
-        'nloptr', 'quadprog', 'RiskPortfolios', 'timeSeries', 'lubridate','knitr', 'showtext',
+        'nloptr', 'quadprog', 'RiskPortfolios', 'timeSeries', 'lubridate','knitr', 
         'corrplot')
 sapply(pkg, require, character.only = T)
 
 options(warn = -1)
 
-font_add_google('Nanum Gothic', 'nanumgothic')
-showtext_auto()
+
 ```
 
 
