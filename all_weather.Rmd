@@ -9,7 +9,7 @@ knitr::opts_chunk$set(message = F, warning = F)
 ```
 
 레이달리오의 all weather 포트폴리오 전략과 Global dynamic asset allocation 전략에 대한 벡테스트 결과를 비교 벡테스팅 방법 및 코드는 https://github.com/hyunyulhenry/GDAA 을 참조
-
+ 
 
 ### 레이달리오의 all weather 포트폴리오
 
