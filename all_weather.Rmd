@@ -46,6 +46,8 @@ prices = do.call(cbind, lapply(ticker, function(x) Ad(get(x)))) %>% setNames(tic
 rets = Return.calculate(prices) %>% na.omit() %>% window(., start = '2008-01-02')
 ```
 
+
+
 #### Correlation Plot
 ```{r corplot}
 cor(rets) %>% corrplot(method = 'color', type = 'upper',
@@ -54,6 +56,7 @@ cor(rets) %>% corrplot(method = 'color', type = 'upper',
                        col = colorRampPalette(c('blue', 'white', 'red'))(200),
                        mar = c(0, 0, 0.5, 0))
 ```
+
 
 
 #### Backtesting with 'Return.portfolio' function  
@@ -74,6 +77,8 @@ Port_all_net = portfolio_all_g$returns - (Port_all_turnover * fee)
 
 names(Port_all_net) = 'Returns_allweather'
 ```
+
+
 
 #### Backtesting results
 ```{r result, echo = F}
@@ -98,6 +103,7 @@ Annualized_std = as.numeric(t(StdDev.annualized(Port_all_net)))
 table = data.frame(cbind(Cummulative_return, Annualized_return, Max_drawdown, Annualized_std)) 
 rownames(table) = c('All Weather')
 ```
+
 
 ```{r chart, echo = F}
 # Annualized returns graph
@@ -127,10 +133,15 @@ ggplot(R.yr, aes(x = Index, y = value)) +
 ```
 
 
+
 #### Summarization(All weather)
 ```{r table, echo = F}
-kable(table[1, ], caption = 'Summarization')
+kable(table[1, ], caption = 'Table1: Summarization(All weather')
 ```
+
+
+
+
 
 ### GDAA(Global Dynamic Asset Allocation) Strategy
 
@@ -139,6 +150,8 @@ kable(table[1, ], caption = 'Summarization')
 2. Make minimum variance portfolio with chosen 5 ETFs with minimum weights 10% and maximum weights 30% constraints
 
 3. Rebalance portfolio monthly
+
+
 
 #### Download ETF price data and data cleansing 
 ```{r pricedownload}
@@ -163,6 +176,8 @@ prices = do.call(cbind, lapply(ticker, function(x) Ad(get(x)))) %>% setNames(tic
 rets = Return.calculate(prices) %>% na.omit()
 ```
 
+
+
 #### Correlation plot 
 ```{r corplot1}
 cor(rets) %>% corrplot(method = 'color', type = 'upper',
@@ -171,6 +186,7 @@ cor(rets) %>% corrplot(method = 'color', type = 'upper',
                        col = colorRampPalette(c('blue', 'white', 'red'))(200),
                        mar = c(0, 0, 0.5, 0))
 ```
+
 
 
 #### Portfolio structuring
@@ -217,6 +233,8 @@ weights = do.call(rbind, weights)
 
 ```
 
+
+
 #### Backtesting with 'Return.portfolio' function  
 ```{r backtesting_gdaa}
 portfolio_gdaa_g = Return.portfolio(R = rets, weights,
@@ -237,11 +255,14 @@ Port_gdaa_net = portfolio_gdaa_g$returns - (Port_gdaa_turnover * fee)
 names(Port_gdaa_net) = 'Returns_gdaa'
 ```
 
+
+
 #### Backtesting results
 ```{r result_gdaa, echo = F}
 # Cummulative returns chart 
 chart.CumReturns(Port_gdaa_net, main = 'Cummulative returns(gdaa)')
 ```
+
 
 ```{r result_1_gdaa, echo = F}
 # Calculate cummulative returns
@@ -260,6 +281,7 @@ Annualized_std = as.numeric(t(StdDev.annualized(Port_gdaa_net)))
 table = data.frame(cbind(Cummulative_return, Annualized_return, Max_drawdown, Annualized_std)) 
 rownames(table) = c('GDAA')
 ```
+
 
 ```{r chart_gdaa, echo = F}
 # Annualized returns graph
@@ -289,10 +311,23 @@ ggplot(R.yr, aes(x = Index, y = value)) +
 ```
 
 
+
+#### Dynamics of weights
+```{r dynamics, echo = F}
+weights_data <- as.data.frame(weights) 
+kable(tail(weights_data, 12), caption = 'Table2: Weights')
+```
+
+
+
 #### Summarization(GDAA)
 ```{r table_gdaa, echo = F}
-kable(table[1, ], caption = 'Summarization')
+kable(table[1, ], caption = 'Table3: Summarization(GDAA)')
 ```
+
+
+
+
 
 ### All weather vs GDAA
 
@@ -303,6 +338,8 @@ portfolios = na.omit(cbind(Port_all_net, Port_gdaa_net)) %>% setNames(c('All wea
 
 charts.PerformanceSummary(portfolios, main = 'All weather vs GDAA')
 ```
+
+ 
  
 #### Summarization(All Weather vs GDAA)
 ```{r table_gdaavs, echo = F}
