@@ -211,7 +211,7 @@ names(Port_gdaa_net) = 'Returns_gdaa'
 | ---- | ------------------: | -----------------: | ------------: | --------------: |
 | GDAA |            1.405778 |          0.0765278 |     0.1631829 |       0.1067171 |
 
-Summaization
+Summarization
 
 ### All weather vs GDAA
 

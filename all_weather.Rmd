@@ -291,7 +291,7 @@ ggplot(R.yr, aes(x = Index, y = value)) +
 
 #### Summarization(GDAA)
 ```{r table_gdaa, echo = F}
-kable(table[1, ], caption = 'Summaization')
+kable(table[1, ], caption = 'Summarization')
 ```
 
 ### All weather vs GDAA
