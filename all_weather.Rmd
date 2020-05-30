@@ -240,7 +240,7 @@ names(Port_gdaa_net) = 'Returns_gdaa'
 #### Backtesting results
 ```{r result_gdaa, echo = F}
 # Cummulative returns chart 
-chart.CumReturns(Port_gdaa_net, main = '누적 수익률(gdaa)', family = 'nanumgothic')
+chart.CumReturns(Port_gdaa_net, main = 'Cummulative returns(gdaa)')
 ```
 
 ```{r result_1_gdaa, echo = F}
