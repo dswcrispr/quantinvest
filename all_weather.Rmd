@@ -315,7 +315,7 @@ ggplot(R.yr, aes(x = Index, y = value)) +
 #### Dynamics of weights
 ```{r dynamics, echo = F}
 weights_data <- as.data.frame(weights) 
-kable(tail(weights_data, 12), caption = 'Table2: Weights')
+kable(tail(weights_data, 36), caption = 'Table2: Weights')
 ```
 
 
