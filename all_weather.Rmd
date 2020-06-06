@@ -58,6 +58,33 @@ cor(rets) %>% corrplot(method = 'color', type = 'upper',
 ```
 
 
+#### Prices trend
+```{r trend_1, echo = F, message = F}
+a_year_ago = which(index(prices) == '2019-6-05')
+now = dim(prices)[1]
+
+prices_recent = prices[c(a_year_ago : now), ]
+
+dim_1 = dim(prices_recent)[1]
+dim_2 = dim(prices_recent)[2]
+
+# Make matrix to normalize prices with initial stock prices at 'a_year_ago'
+init_prices = matrix(rep(prices_recent[1, c(1:dim_2)], rep.int(dim_1, dim_2)),
+                     dim_1, dim_2)
+
+
+# Normalization
+prices_norm = (prices_recent / init_prices) * 100
+
+# Graph
+ggplot(prices_norm, aes(x = Index)) + geom_line(aes(y = VTI, color = 'VTI')) +
+  geom_line(aes(y = TLT, color = 'TLT')) + geom_line(aes(y = IEF, color = 'IEF')) + 
+  geom_line(aes(y = GLD, color = 'GLD')) + geom_line(aes(y = DBC, color = 'DBC')) +         ylab('') + xlab('') + ggtitle('as of 2020.06.06(2019.06.05 = 100)') +
+  theme(legend.title = element_blank()) 
+  
+```
+
+
 
 #### Backtesting with 'Return.portfolio' function  
 ```{r backtesting}
@@ -185,6 +212,37 @@ cor(rets) %>% corrplot(method = 'color', type = 'upper',
                        tl.cex = 0.6, tl.srt = 45, tl.col = 'black',
                        col = colorRampPalette(c('blue', 'white', 'red'))(200),
                        mar = c(0, 0, 0.5, 0))
+```
+
+
+
+#### Prices trend
+```{r trend_2, echo = F}
+a_year_ago = which(index(prices) == '2019-6-05')
+now = dim(prices)[1]
+
+prices_recent = prices[c(a_year_ago : now), ]
+
+dim_1 = dim(prices_recent)[1]
+dim_2 = dim(prices_recent)[2]
+
+# Make matrix to normalize prices with initial stock prices at 'a_year_ago'
+init_prices = matrix(rep(prices_recent[1, c(1:dim_2)], rep.int(dim_1, dim_2)),
+                     dim_1, dim_2)
+
+
+# Normalization
+prices_norm = (prices_recent / init_prices) * 100
+
+# Graph
+ggplot(prices_norm, aes(x = Index)) + geom_line(aes(y = VTI, color = 'VTI')) +
+  geom_line(aes(y = IEV, color = 'IEV')) + geom_line(aes(y = EWJ, color = 'EWJ')) +
+  geom_line(aes(y = EEM, color = 'EEM')) + geom_line(aes(y = TLT, color = 'TLT')) +
+  geom_line(aes(y = IEF, color = 'IEF')) + geom_line(aes(y = IYR, color = 'IYR')) +
+  geom_line(aes(y = RWX, color = 'RWX')) + geom_line(aes(y = GLD, color = 'GLD')) +
+  geom_line(aes(y = DBC, color = 'DBC')) +   ylab('') +
+  xlab('') + ggtitle('as of 2020.06.06(2019.06.05 = 100)') + theme(legend.title = element_blank()) 
+  
 ```
 
 
