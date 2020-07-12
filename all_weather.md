@@ -21,7 +21,7 @@ and 7.5% Commodity ETF. And this strategy makes rebalancing annually.
 ticker = c('VTI', # All US stocks
            'TLT', # US long-term bonds
            'IEF', # US intermediate-term bonds
-           'GLD', # Gold ETf
+           'GLD', # Gold ETF
            'DBC'  # Commodities ETF
            
 )
