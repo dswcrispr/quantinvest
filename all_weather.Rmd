@@ -8,10 +8,10 @@ knitr::opts_chunk$set(message = F, warning = F)
 
 ```
 
-Comparing all weather portfolio strategy by Ray Dalio with Glbal dynamic asset allocation strategy.(reference:https://github.com/hyunyulhenry/GDAA)
+Comparing all weather portfolio strategy by Ray Dalio with Global dynamic asset allocation strategy.(reference:https://github.com/hyunyulhenry/GDAA)
 
 
-### All weather portfolio by Ray Dalio
+## All weather portfolio by Ray Dalio
 
 Asstet allocation that is supposed to be able to weather any economic storm(inflation, low economic growth, etc), manage risk exposure, and make steady returns over the long term.
 
@@ -28,7 +28,7 @@ options(warn = -1)
 ```
 
 
-#### Download ETF price data and data cleansing 
+### Download ETF price data and data cleansing 
 ```{r download}
 ticker = c('VTI', # All US stocks
            'TLT', # US long-term bonds
@@ -48,7 +48,7 @@ rets = Return.calculate(prices) %>% na.omit() %>% window(., start = '2008-01-02'
 
 
 
-#### Correlation Plot
+### Correlation Plot
 ```{r corplot}
 cor(rets) %>% corrplot(method = 'color', type = 'upper',
                        addCoef.col = 'black', number.cex = 0.7,
@@ -58,7 +58,7 @@ cor(rets) %>% corrplot(method = 'color', type = 'upper',
 ```
 
 
-#### Prices trend
+### Prices trend
 ```{r trend_1, echo = F, message = F}
 a_year_ago = which(index(prices) == '2019-6-05')
 now = dim(prices)[1]
@@ -86,7 +86,7 @@ ggplot(prices_norm, aes(x = Index)) + geom_line(aes(y = VTI, color = 'VTI')) +
 
 
 
-#### Backtesting with 'Return.portfolio' function  
+### Backtesting with 'Return.portfolio' function  
 ```{r backtesting}
 portfolio_all_g = Return.portfolio(R = rets, weights = c(0.3, 0.4, 0.15, 0.075, 0.075),
                                    rebalance_on = 'years', verbose = T)
@@ -107,7 +107,7 @@ names(Port_all_net) = 'Returns_allweather'
 
 
 
-#### Backtesting results
+### Backtesting results
 ```{r result, echo = F}
 # Cummulative returns chart 
 chart.CumReturns(Port_all_net, main = 'Cummulative Return(all weather)')
@@ -161,7 +161,7 @@ ggplot(R.yr, aes(x = Index, y = value)) +
 
 
 
-#### Summarization(All weather)
+### Summarization(All weather)
 ```{r table, echo = F}
 kable(table[1, ], caption = 'Table1: Summarization(All weather')
 ```
@@ -170,7 +170,7 @@ kable(table[1, ], caption = 'Table1: Summarization(All weather')
 
 
 
-### GDAA(Global Dynamic Asset Allocation) Strategy
+## GDAA(Global Dynamic Asset Allocation) Strategy
 
 1. Choose 5 ETFs with high returns in the past 3~12 months among 10 global ETFs 
 
@@ -180,7 +180,7 @@ kable(table[1, ], caption = 'Table1: Summarization(All weather')
 
 
 
-#### Download ETF price data and data cleansing 
+### Download ETF price data and data cleansing 
 ```{r pricedownload}
 ticker = c('VTI', # All US stocks
            'IEV', # European stocks
@@ -205,7 +205,7 @@ rets = Return.calculate(prices) %>% na.omit()
 
 
 
-#### Correlation plot 
+### Correlation plot 
 ```{r corplot1}
 cor(rets) %>% corrplot(method = 'color', type = 'upper',
                        addCoef.col = 'black', number.cex = 0.7,
@@ -216,7 +216,7 @@ cor(rets) %>% corrplot(method = 'color', type = 'upper',
 
 
 
-#### Prices trend
+### Prices trend
 ```{r trend_2, echo = F}
 a_year_ago = which(index(prices) == '2019-6-05')
 now = dim(prices)[1]
@@ -247,7 +247,7 @@ ggplot(prices_norm, aes(x = Index)) + geom_line(aes(y = VTI, color = 'VTI')) +
 
 
 
-#### Portfolio structuring
+### Portfolio structuring
 ```{r create_port}
 # Extracting indices of end of each month
 ep = endpoints(rets, on = 'months')
@@ -293,7 +293,7 @@ weights = do.call(rbind, weights)
 
 
 
-#### Backtesting with 'Return.portfolio' function  
+### Backtesting with 'Return.portfolio' function  
 ```{r backtesting_gdaa}
 portfolio_gdaa_g = Return.portfolio(R = rets, weights,
                              rebalance_on = 'months',
@@ -315,7 +315,7 @@ names(Port_gdaa_net) = 'Returns_gdaa'
 
 
 
-#### Backtesting results
+### Backtesting results
 ```{r result_gdaa, echo = F}
 # Cummulative returns chart 
 chart.CumReturns(Port_gdaa_net, main = 'Cummulative returns(gdaa)')
@@ -370,7 +370,7 @@ ggplot(R.yr, aes(x = Index, y = value)) +
 
 
 
-#### Dynamics of weights
+### Dynamics of weights
 ```{r dynamics, echo = F}
 weights_data <- as.data.frame(weights) 
 kable(tail(weights_data, 36), caption = 'Table2: Weights')
@@ -378,7 +378,7 @@ kable(tail(weights_data, 36), caption = 'Table2: Weights')
 
 
 
-#### Summarization(GDAA)
+### Summarization(GDAA)
 ```{r table_gdaa, echo = F}
 kable(table[1, ], caption = 'Table3: Summarization(GDAA)')
 ```
@@ -387,7 +387,7 @@ kable(table[1, ], caption = 'Table3: Summarization(GDAA)')
 
 
 
-### All weather vs GDAA
+## All weather vs GDAA
 
 Compare results of both strategies
 
@@ -399,7 +399,7 @@ charts.PerformanceSummary(portfolios, main = 'All weather vs GDAA')
 
  
  
-#### Summarization(All Weather vs GDAA)
+### Summarization(All Weather vs GDAA)
 ```{r table_gdaavs, echo = F}
 Cummulative_return = c(as.numeric(t(Return.cumulative(Port_all_net))),
                      as.numeric(t(Return.cumulative(Port_gdaa_net))))
