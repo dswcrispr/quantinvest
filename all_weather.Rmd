@@ -60,7 +60,7 @@ cor(rets) %>% corrplot(method = 'color', type = 'upper',
 
 ### Prices trend
 ```{r trend_1, echo = F, message = F}
-a_year_ago = which(index(prices) == '2019-6-05')
+a_year_ago = which(index(prices) == '2019-7-10')
 now = dim(prices)[1]
 
 prices_recent = prices[c(a_year_ago : now), ]
@@ -79,7 +79,7 @@ prices_norm = (prices_recent / init_prices) * 100
 # Graph
 ggplot(prices_norm, aes(x = Index)) + geom_line(aes(y = VTI, color = 'VTI')) +
   geom_line(aes(y = TLT, color = 'TLT')) + geom_line(aes(y = IEF, color = 'IEF')) + 
-  geom_line(aes(y = GLD, color = 'GLD')) + geom_line(aes(y = DBC, color = 'DBC')) +         ylab('') + xlab('') + ggtitle('as of 2020.07.10(2019.06.05 = 100)') +
+  geom_line(aes(y = GLD, color = 'GLD')) + geom_line(aes(y = DBC, color = 'DBC')) +         ylab('') + xlab('') + ggtitle('as of 2020.07.10(2019.07.10 = 100)') +
   theme(legend.title = element_blank()) 
   
 ```
@@ -218,7 +218,7 @@ cor(rets) %>% corrplot(method = 'color', type = 'upper',
 
 ### Prices trend
 ```{r trend_2, echo = F}
-a_year_ago = which(index(prices) == '2019-6-05')
+a_year_ago = which(index(prices) == '2019-7-10')
 now = dim(prices)[1]
 
 prices_recent = prices[c(a_year_ago : now), ]
@@ -241,7 +241,7 @@ ggplot(prices_norm, aes(x = Index)) + geom_line(aes(y = VTI, color = 'VTI')) +
   geom_line(aes(y = IEF, color = 'IEF')) + geom_line(aes(y = IYR, color = 'IYR')) +
   geom_line(aes(y = RWX, color = 'RWX')) + geom_line(aes(y = GLD, color = 'GLD')) +
   geom_line(aes(y = DBC, color = 'DBC')) +   ylab('') +
-  xlab('') + ggtitle('as of 2020.07.10(2019.06.05 = 100)') + theme(legend.title = element_blank()) 
+  xlab('') + ggtitle('as of 2020.07.10(2019.07.10 = 100)') + theme(legend.title = element_blank()) 
   
 ```
 
