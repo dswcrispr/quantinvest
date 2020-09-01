@@ -60,7 +60,7 @@ cor(rets) %>% corrplot(method = 'color', type = 'upper',
 
 ### Prices trend
 ```{r trend_1, echo = F, message = F}
-a_year_ago = which(index(prices) == '2019-08-02')
+a_year_ago = which(index(prices) == '2019-08-30')
 now = dim(prices)[1]
 
 prices_recent = prices[c(a_year_ago : now), ]
@@ -79,7 +79,7 @@ prices_norm = (prices_recent / init_prices) * 100
 # Graph
 ggplot(prices_norm, aes(x = Index)) + geom_line(aes(y = VTI, color = 'VTI')) +
   geom_line(aes(y = TLT, color = 'TLT')) + geom_line(aes(y = IEF, color = 'IEF')) + 
-  geom_line(aes(y = GLD, color = 'GLD')) + geom_line(aes(y = DBC, color = 'DBC')) +         ylab('') + xlab('') + ggtitle('as of 2020.8.2(2019.8.2 = 100)') +
+  geom_line(aes(y = GLD, color = 'GLD')) + geom_line(aes(y = DBC, color = 'DBC')) +         ylab('') + xlab('') + ggtitle('as of 2020.8.2(2019.8.30 = 100)') +
   theme(legend.title = element_blank()) 
   
 ```
@@ -182,7 +182,7 @@ kable(table[1, ], caption = 'Table1: Summarization(All weather')
 
 ### Download ETF price data and data cleansing 
 ```{r pricedownload}
-ticker = c('VTI', # All US stocks
+ticker = c('QQQ', # US Nasdaq ETF
            'IEV', # European stocks
            'EWJ', # Japan stocks
            'EEM', # Emerging markets stocks
@@ -218,7 +218,7 @@ cor(rets) %>% corrplot(method = 'color', type = 'upper',
 
 ### Prices trend
 ```{r trend_2, echo = F}
-a_year_ago = which(index(prices) == '2019-08-02')
+a_year_ago = which(index(prices) == '2019-08-30')
 now = dim(prices)[1]
 
 prices_recent = prices[c(a_year_ago : now), ]
@@ -235,13 +235,13 @@ init_prices = matrix(rep(prices_recent[1, c(1:dim_2)], rep.int(dim_1, dim_2)),
 prices_norm = (prices_recent / init_prices) * 100
 
 # Graph
-ggplot(prices_norm, aes(x = Index)) + geom_line(aes(y = VTI, color = 'VTI')) +
+ggplot(prices_norm, aes(x = Index)) + geom_line(aes(y = QQQ, color = 'QQQ')) +
   geom_line(aes(y = IEV, color = 'IEV')) + geom_line(aes(y = EWJ, color = 'EWJ')) +
   geom_line(aes(y = EEM, color = 'EEM')) + geom_line(aes(y = TLT, color = 'TLT')) +
   geom_line(aes(y = IEF, color = 'IEF')) + geom_line(aes(y = IYR, color = 'IYR')) +
   geom_line(aes(y = RWX, color = 'RWX')) + geom_line(aes(y = GLD, color = 'GLD')) +
   geom_line(aes(y = DBC, color = 'DBC')) +   ylab('') +
-  xlab('') + ggtitle('as of 2020.08.2(2019.08.2 = 100)') + theme(legend.title = element_blank()) 
+  xlab('') + ggtitle('as of 2020.08.2(2019.08.30 = 100)') + theme(legend.title = element_blank()) 
   
 ```
 
