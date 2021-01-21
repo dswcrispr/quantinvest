@@ -60,7 +60,7 @@ cor(rets) %>% corrplot(method = 'color', type = 'upper',
 
 ### Prices trend
 ```{r trend_1, echo = F, message = F}
-a_year_ago = which(index(prices) == '2019-08-30')
+a_year_ago = which(index(prices) == '2020-01-10')
 now = dim(prices)[1]
 
 prices_recent = prices[c(a_year_ago : now), ]
@@ -218,7 +218,7 @@ cor(rets) %>% corrplot(method = 'color', type = 'upper',
 
 ### Prices trend
 ```{r trend_2, echo = F}
-a_year_ago = which(index(prices) == '2019-08-30')
+a_year_ago = which(index(prices) == '2020-01-10')
 now = dim(prices)[1]
 
 prices_recent = prices[c(a_year_ago : now), ]
