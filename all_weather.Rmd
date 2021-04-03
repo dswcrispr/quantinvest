@@ -60,7 +60,7 @@ cor(rets) %>% corrplot(method = 'color', type = 'upper',
 
 ### Prices trend
 ```{r trend_1, echo = F, message = F}
-a_year_ago = which(index(prices) == '2020-03-2')
+a_year_ago = which(index(prices) == '2020-04-1')
 now = dim(prices)[1]
 
 prices_recent = prices[c(a_year_ago : now), ]
@@ -77,9 +77,13 @@ init_prices = matrix(rep(prices_recent[1, c(1:dim_2)], rep.int(dim_1, dim_2)),
 prices_norm = (prices_recent / init_prices) * 100
 
 # Graph
-ggplot(prices_norm, aes(x = Index)) + geom_line(aes(y = VTI, color = 'VTI')) +
-  geom_line(aes(y = TLT, color = 'TLT')) + geom_line(aes(y = IEF, color = 'IEF')) + 
-  geom_line(aes(y = GLD, color = 'GLD')) + geom_line(aes(y = DBC, color = 'DBC')) +         ylab('') + xlab('') + ggtitle('as of 2021.3.26(2020.3.2 = 100)') +
+ggplot(prices_norm, aes(x = Index)) +
+  geom_line(aes(y = VTI, color = 'VTI'), size = 1) +
+  geom_line(aes(y = TLT, color = 'TLT'), size = 1) +
+  geom_line(aes(y = IEF, color = 'IEF'), size = 1) + 
+  geom_line(aes(y = GLD, color = 'GLD'), size = 1) +
+  geom_line(aes(y = DBC, color = 'DBC'), size = 1) +  ylab('') + xlab('') + 
+  ggtitle('as of 2021.4.1(2020.4.1 = 100)') +
   theme(legend.title = element_blank()) 
   
 ```
@@ -88,7 +92,8 @@ ggplot(prices_norm, aes(x = Index)) + geom_line(aes(y = VTI, color = 'VTI')) +
 
 ### Backtesting with 'Return.portfolio' function  
 ```{r backtesting}
-portfolio_all_g = Return.portfolio(R = rets, weights = c(0.3, 0.4, 0.15, 0.075, 0.075),
+portfolio_all_g = Return.portfolio(R = rets,
+                                   weights = c(0.3, 0.4, 0.15, 0.075, 0.075),
                                    rebalance_on = 'years', verbose = T)
 
 # Calculating turnover
@@ -218,7 +223,7 @@ cor(rets) %>% corrplot(method = 'color', type = 'upper',
 
 ### Prices trend
 ```{r trend_2, echo = F}
-a_year_ago = which(index(prices) == '2020-03-2')
+a_year_ago = which(index(prices) == '2020-04-1')
 now = dim(prices)[1]
 
 prices_recent = prices[c(a_year_ago : now), ]
@@ -235,13 +240,18 @@ init_prices = matrix(rep(prices_recent[1, c(1:dim_2)], rep.int(dim_1, dim_2)),
 prices_norm = (prices_recent / init_prices) * 100
 
 # Graph
-ggplot(prices_norm, aes(x = Index)) + geom_line(aes(y = QQQ, color = 'QQQ')) +
-  geom_line(aes(y = IEV, color = 'IEV')) + geom_line(aes(y = EWJ, color = 'EWJ')) +
-  geom_line(aes(y = EEM, color = 'EEM')) + geom_line(aes(y = TLT, color = 'TLT')) +
-  geom_line(aes(y = IEF, color = 'IEF')) + geom_line(aes(y = IYR, color = 'IYR')) +
-  geom_line(aes(y = RWX, color = 'RWX')) + geom_line(aes(y = GLD, color = 'GLD')) +
-  geom_line(aes(y = DBC, color = 'DBC')) +   ylab('') +
-  xlab('') + ggtitle('as of 2021.3.26(2020.03.2 = 100)') + theme(legend.title = element_blank()) 
+ggplot(prices_norm, aes(x = Index)) + geom_line(aes(y = QQQ, color = 'QQQ'), size = 1) +
+  geom_line(aes(y = IEV, color = 'IEV'), size = 1) +
+  geom_line(aes(y = EWJ, color = 'EWJ'), size = 1) +
+  geom_line(aes(y = EEM, color = 'EEM'), size = 1) +
+  geom_line(aes(y = TLT, color = 'TLT'), size = 1) +
+  geom_line(aes(y = IEF, color = 'IEF'), size = 1) +
+  geom_line(aes(y = IYR, color = 'IYR'), size = 1) +
+  geom_line(aes(y = RWX, color = 'RWX'), size = 1) +
+  geom_line(aes(y = GLD, color = 'GLD'), size = 1) +
+  geom_line(aes(y = DBC, color = 'DBC'), size = 1) +   ylab('') +
+  xlab('') + ggtitle('as of 2021.4.1(2020.4.1 = 100)') +
+  theme(legend.title = element_blank()) 
   
 ```
 
